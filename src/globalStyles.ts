@@ -13,13 +13,16 @@ const GlobalStyles = createGlobalStyle`
 
 html, body, #root {
   height: 100%;
-  font-size: 16px;
+  font-size: 10px;
   font-family: 'Space Mono', monospace;
 }
 
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  background: ${({theme}) => theme.body};
+  color: ${({theme}) => theme.text};
+  transition: all 0.50s linear;
 }
 
 img, picture, video, canvas, svg {
