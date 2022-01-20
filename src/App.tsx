@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from './globalStyles';
-import { lightTheme, darkTheme } from "./Themes";
+import useDarkMode from './hooks/useDarkMode';
+import {lightMode, darkMode} from './Themes';
 import GitHubSearchPanel from './componets/GitHubSearchPanel';
-import { COLORS } from './constant';
 
 const Wrapper = styled.div`
   min-height: 100%;
@@ -12,16 +11,15 @@ const Wrapper = styled.div`
 `;
 
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [mode, setMode] = useDarkMode();
 
-  function themeToggler() {
-    theme === 'light' ? setTheme('dark') : setTheme('light') 
-  }
   return (
-    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+    <ThemeProvider theme={mode === 'dark' ? darkMode : lightMode}>
       <Wrapper>
-        <button onClick={themeToggler}>ChanegTheme</button>
-        <GitHubSearchPanel />
+        <GitHubSearchPanel
+          setMode={setMode}
+          mode={mode}
+        />
       </Wrapper>
       <GlobalStyles />
     </ThemeProvider>
