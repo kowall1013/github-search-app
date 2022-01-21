@@ -4,7 +4,7 @@ declare module "styled-components" {
   export interface DefaultTheme {
     body: string;
     blue: string
-    gray?: string
+    gray: string
     grayBlue?: string;
     white: string;
     text: string;
@@ -29,6 +29,7 @@ export const darkMode: DefaultTheme = {
   secendary: "hsl(0, 0%, 100%)",
   cardColor: "hsl(222, 41%, 20%)",
   blue: "hsl(212, 100%, 50%)",
-  white: "hsl(0, 0%, 100%)"
+  white: "hsl(0, 0%, 100%)",
+  gray: "hsl(0, 0%, 100%)",
 }
 
