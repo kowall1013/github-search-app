@@ -1,9 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { QUERIES } from '../constant';
 import { SetDarkModeState, DarkModeState } from '../hooks/useDarkMode';
 import Card from './Card';
 
 const API =  'https://api.github.com/users/:username';
+
+const Wrapper = styled.div`
+  max-width: 573px;
+  margin: 0 auto;
+
+  @media ${QUERIES.laptopAndUp} {
+    max-width: 730px;
+  }
+`;
 
 const Header = styled.header`
   display: flex;
@@ -63,6 +73,10 @@ const SearchInput = styled.input`
   &:focus, &:active {
     outline: 1px solid transparent;
   }
+
+  ::placeholder {
+    color: ${({ theme }) => theme.gray};
+  }
 `;
 
 const SearchButton = styled.button`
@@ -95,6 +109,8 @@ export interface UserGithubPageTypes {
   followers: number;
   following: number,
   created_at: string,
+  company: string,
+  organizations_url: string;
 }
 
 const initUserGithubPage: UserGithubPageTypes = {
@@ -111,15 +127,14 @@ const initUserGithubPage: UserGithubPageTypes = {
   followers: 0,
   following: 0,
   created_at: '',
+  company: '',
+  organizations_url: '',
 }
 
 function GitHubSearchPanel({ setMode, mode }: GitHubSearchPanelProps):JSX.Element {
   const [githubPageUser, setGithubPageUser] = useState<UserGithubPageTypes>(initUserGithubPage);
   const [error, setError] = useState('');
   const [username, setUsername] = useState('')
-
-  console.log('githubPageUser', githubPageUser)
-
 
 
   const fetchGitHubAccount = async(username: string) => { 
@@ -132,8 +147,12 @@ function GitHubSearchPanel({ setMode, mode }: GitHubSearchPanelProps):JSX.Elemen
     }
   }
 
+  useEffect(() => {
+    fetchGitHubAccount('octocat')
+  }, [])
+
   return (
-    <div>
+    <Wrapper>
       <Header>
         <Title>devfinder</Title>
         <ThemeMode
@@ -155,7 +174,7 @@ function GitHubSearchPanel({ setMode, mode }: GitHubSearchPanelProps):JSX.Elemen
         <SearchButton onClick={() => fetchGitHubAccount(username)}>Search</SearchButton>
       </Search>
       <Card user={githubPageUser} />
-    </div>
+    </Wrapper>
   )
 }
 
