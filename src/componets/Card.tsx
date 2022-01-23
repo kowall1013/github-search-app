@@ -12,6 +12,12 @@ const Wrapper = styled.div`
   @media ${QUERIES.tabletAndUp} {
     padding: 40px;
   }
+
+  @media ${QUERIES.laptopAndUp} {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 40px;
+  }
 `;
 
 const Header = styled.header`
@@ -32,6 +38,18 @@ const Avatar = styled.div`
 
   @media ${QUERIES.laptopAndUp} {
     display: none;
+  }
+`;
+
+const AvatarDesktop = styled.div`
+  display: none;
+
+  @media ${QUERIES.laptopAndUp} {
+    display: revert;
+
+    img {
+      border-radius: 50%;
+    }
   }
 `;
 
@@ -147,7 +165,12 @@ const FooterLink = styled.a`
   gap: 16px;
   align-items: center;
   color: ${({ theme }) => theme.gray};
-  text-decoration: none;
+  text-decoration: underline 0.15em rgba(0, 0, 0, 0);
+  transition: text-decoration-color 300ms;
+
+  &:hover {
+    text-decoration-color: ${({ theme }) => theme.gray};
+  }
 
   p {
     font-size: 1.3rem;
@@ -170,75 +193,82 @@ function Card ({ user }: CardProps):JSX.Element {
   const { avatar_url, name, login, created_at, bio, location, blog, twitter_username, company, organizations_url } = user;
   return (
     <Wrapper>
+      <div>
+        <AvatarDesktop>
+          <img src={avatar_url} alt="" />
+        </AvatarDesktop>
+      </div>
+      <div>
         <Header>
-          <Avatar>
-            <img src={avatar_url} alt="" />
-          </Avatar>
-          <HeaderDescription>
-            <h2>{name}</h2>
-            <p>@{login}</p>
-            <p> Joined {formatDate(created_at)}</p>
-          </HeaderDescription>
-        </Header>
-        <UserDescription>{bio}</UserDescription>
-        <List>
-          <ListItem>
-            <h3>Repos</h3>
-            <span>8</span>
-          </ListItem>
-          <ListItem>
-            <h3>Followers</h3>
-            <span>3938</span>
-          </ListItem>
-          <ListItem>
-            <h3>Following</h3>
-            <span>9</span>
-          </ListItem>
-        </List>
-        <footer>
-          <FooterList>
-            <li>
-              <FooterLink
-               href='https://www.google.com/maps/place/San+Francisco,+Kalifornia,+Stany+Zjednoczone/@37.7576171,-122.5776844,11z/data=!3m1!4b1!4m5!3m4!1s0x80859a6d00690021:0x4a501367f076adff!8m2!3d37.7749295!4d-122.4194155'
-               target="_blank"
-               rel="noreferrer"
-               >
-                <img src="./assets/icon-location.svg" alt="" />
-                <p>{location ? location : <span>Not available</span>}</p>
-              </FooterLink>
-            </li>
-            <li>
-              <FooterLink
-               href={blog}
-               target="_blank"
-               rel="noreferrer"
-              >
-                <img src="./assets/icon-website.svg" alt="" />
-                <p>{blog ? blog : <span>Not available</span>}</p>
-              </FooterLink>
-            </li>
-            <li>
-              <FooterLink
-                href="www.twitter.com"
+            <Avatar>
+              <img src={avatar_url} alt="" />
+            </Avatar>
+            <HeaderDescription>
+              <h2>{name}</h2>
+              <p>@{login}</p>
+              <p> Joined {formatDate(created_at)}</p>
+            </HeaderDescription>
+          </Header>
+          <UserDescription>{bio}</UserDescription>
+          <List>
+            <ListItem>
+              <h3>Repos</h3>
+              <span>8</span>
+            </ListItem>
+            <ListItem>
+              <h3>Followers</h3>
+              <span>3938</span>
+            </ListItem>
+            <ListItem>
+              <h3>Following</h3>
+              <span>9</span>
+            </ListItem>
+          </List>
+          <footer>
+            <FooterList>
+              <li>
+                <FooterLink
+                href='https://www.google.com/maps/place/San+Francisco,+Kalifornia,+Stany+Zjednoczone/@37.7576171,-122.5776844,11z/data=!3m1!4b1!4m5!3m4!1s0x80859a6d00690021:0x4a501367f076adff!8m2!3d37.7749295!4d-122.4194155'
                 target="_blank"
                 rel="noreferrer"
-              >
-                <img src="./assets/icon-twitter.svg" alt="" />
-                <p>{twitter_username ? twitter_username : <span>Not available</span>}</p>
-              </FooterLink>
-            </li>
-            <li>
-              <FooterLink
-                href={organizations_url}
+                >
+                  <img src="./assets/icon-location.svg" alt="" />
+                  <p>{location ? location : <span>Not available</span>}</p>
+                </FooterLink>
+              </li>
+              <li>
+                <FooterLink
+                href={blog}
                 target="_blank"
                 rel="noreferrer"
-              >
-                <img src="./assets/icon-company.svg" alt="" />
-                <p>{company ? company : <span>Not available</span>}</p>
-              </FooterLink>    
-            </li>
-          </FooterList>
-        </footer>
+                >
+                  <img src="./assets/icon-website.svg" alt="" />
+                  <p>{blog ? blog : <span>Not available</span>}</p>
+                </FooterLink>
+              </li>
+              <li>
+                <FooterLink
+                  href="www.twitter.com"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img src="./assets/icon-twitter.svg" alt="" />
+                  <p>{twitter_username ? twitter_username : <span>Not available</span>}</p>
+                </FooterLink>
+              </li>
+              <li>
+                <FooterLink
+                  href={organizations_url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img src="./assets/icon-company.svg" alt="" />
+                  <p>{company ? company : <span>Not available</span>}</p>
+                </FooterLink>    
+              </li>
+            </FooterList>
+          </footer>
+        </div>
       </Wrapper>
   )
 };

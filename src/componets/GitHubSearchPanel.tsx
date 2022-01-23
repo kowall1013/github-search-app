@@ -35,6 +35,7 @@ const ThemeMode = styled.button`
   gap: 16px;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 
 
   span {
@@ -48,6 +49,7 @@ const ThemeMode = styled.button`
 `;
 
 const Search = styled.div`
+  position: relative;
   display: flex;
   padding: 7px 7px 7px 16px;
   border-radius: 15px;
@@ -55,7 +57,24 @@ const Search = styled.div`
   align-items: center;
   gap: 8px;
   margin-bottom: 16px;
+  flex-wrap: nowrap;
 `
+
+const NoResultInfo = styled.span`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 100px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.red};
+  margin-right: 8px;
+
+  @media ${QUERIES.laptopAndUp} {
+    font-size: 1.5rem;
+    margin-right: 24px;
+  }
+`;
 
 const IconSearchWrapper = styled.div`
   min-width: 20px;
@@ -88,6 +107,7 @@ const SearchButton = styled.button`
   border: 1px solid transparent;
   border-radius: 10px;
   color: ${({ theme }) => theme.white};
+  cursor: pointer;
 `;
 
 type GitHubSearchPanelProps = {
@@ -111,6 +131,7 @@ export interface UserGithubPageTypes {
   created_at: string,
   company: string,
   organizations_url: string;
+  message?: string | undefined;
 }
 
 const initUserGithubPage: UserGithubPageTypes = {
@@ -133,23 +154,30 @@ const initUserGithubPage: UserGithubPageTypes = {
 
 function GitHubSearchPanel({ setMode, mode }: GitHubSearchPanelProps):JSX.Element {
   const [githubPageUser, setGithubPageUser] = useState<UserGithubPageTypes>(initUserGithubPage);
-  const [error, setError] = useState('');
   const [username, setUsername] = useState('')
-
+  const [status, setStatus] = useState('')
 
   const fetchGitHubAccount = async(username: string) => { 
     try {
+      setStatus('loading')
       const res = await fetch(API.replace(':username', username ));
       const data = await res.json();
       setGithubPageUser(data);
+      setStatus('fulfilled')
     } catch (error) {
-      setError('something goes wrong')
+      setStatus('rejected')
     }
   }
 
   useEffect(() => {
     fetchGitHubAccount('octocat')
   }, [])
+
+  function renderCard(status: string) {
+    if (status === 'loading') return <p>Loading....</p>
+    if (status === 'fulfilled') return  <Card user={githubPageUser}/>
+    if (status === 'rejected') return  <p>Something goes wrong</p>
+  }
 
   return (
     <Wrapper>
@@ -171,9 +199,10 @@ function GitHubSearchPanel({ setMode, mode }: GitHubSearchPanelProps):JSX.Elemen
          value={username}
          onChange={(e) => setUsername(e.target.value)}
         />
+        {githubPageUser.message === 'Not Found' ? <NoResultInfo>No result</NoResultInfo> : null}
         <SearchButton onClick={() => fetchGitHubAccount(username)}>Search</SearchButton>
       </Search>
-      <Card user={githubPageUser} />
+      {renderCard(status)}
     </Wrapper>
   )
 }

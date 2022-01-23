@@ -9,7 +9,8 @@ declare module "styled-components" {
     white: string;
     text: string;
     secendary: string;
-    cardColor: string
+    cardColor: string;
+    red: string;
   }
 }
 
@@ -22,6 +23,7 @@ export const lightMode: DefaultTheme = {
   white: "hsl(0, 0%, 100%)",
   gray: "hsl(217, 20%, 51%)",
   grayBlue: "hsl(217, 35%, 45%)",
+  red: "hsla(0, 91%, 62%, 1)",
 }
 export const darkMode: DefaultTheme = {
   body: "hsl(220, 40%, 13%)",
@@ -31,5 +33,6 @@ export const darkMode: DefaultTheme = {
   blue: "hsl(212, 100%, 50%)",
   white: "hsl(0, 0%, 100%)",
   gray: "hsl(0, 0%, 100%)",
+  red: "hsla(0, 91%, 62%, 1)"
 }
 
